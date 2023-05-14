@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<style>
+    .icon {
+        height: 18px;
+        width: 18px;
+    }
+
+    .inactive {
+        color: rgb(231, 39, 9)
+    }
+
+    .active {
+        color: rgb(26, 206, 50);
+    }
+</style>
+{% endblock %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+<div class="app h-screen w-screen">
+    <div class="">
+        <table class="bg-gray-200 p-3 border-collapse">
+            <thead class="p-2 border-b border-slate-600">
+                <tr class="p-2">
+                    <th class="p-1"> ID </th>
+                    <th class="p-1"> Source </th>
+                    <th class="p-1"> Status </th>
+                    <th class="p-1"> Online </th>
+                    <th class="p-1"> Message </th>
+                </tr>
+            </thead>
+            <tbody id="table-body" class="p-2 divide-y divide-slate-600">
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+    async function sendMessageToClient(clientId) {
+        console.log("Will send a message to client with id = " + clientId);
+    }
+
+    const tableBody = document.getElementById("table-body");
+
+    const sources = [
+        { "id": 1, "source": "Garden", "status": "ONLINE", "online": true },
+        { "id": 2, "source": "Garden", "status": "ONLINE", "online": false },
+        { "id": 3, "source": "Garden", "status": "ONLINE", "online": false },
+        { "id": 4, "source": "Garden", "status": "ONLINE", "online": true },
+    ];
+
+    let html = "";
+
+    for(const source of sources) {
+        html += `<tr class="p-2">`;
+        for (const keyValue of Object.entries(source)) {
+            const [_, value] = keyValue;
+            html += `
+            <td class="p-2">
+                <div class="leading-5 text-sm">
+                    ${typeof value === "boolean" ? `<ion-icon name="logo-web-component" class='${value ? "icon active" : "icon inactive"}'></ion-icon>` : value }
+                </div>
+            </td>
+            `;
+        }
+        html += `
+        <td class="p-2">
+            <div class="">
+                <button class="px-4 py-2 bg-blue-800 text-white text-xs" onclick="sendMessageToClient(${source.id})">
+                    Message
+                </button>
+            </div>
+        </td>
+        `
+        html += "</tr>";
+    }
+
+    tableBody.innerHTML = html;
+</script>
+{% endblock %}
