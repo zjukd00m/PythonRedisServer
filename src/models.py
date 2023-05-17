@@ -4,7 +4,14 @@ from uuid import uuid4
 from .utils.db import Base
 
 
-class User(Base):
+class DictMixin:
+    def to_dict(self):
+        return {
+            column.name: getattr(self, column.name) for column in self.__table__.columns
+        }
+
+
+class User(DictMixin, Base):
     __tablename__ = "Users"
 
     _id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)

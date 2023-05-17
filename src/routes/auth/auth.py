@@ -65,10 +65,10 @@ def register(userDTO: UserDTO, db: Session = Depends(get_pg_conn)):
     # Store the user in the database
     return JSONResponse(
         content={
-            "_id": user._id,
+            "_id": str(user._id),
             "email": user.email,
-            "created_at": user.created_at,
-            "updated_at": user.updated_at,
+            "created_at": user.created_at.isoformat(),
+            "updated_at": user.updated_at.isoformat(),
             "username": user.username,
         }
     )
