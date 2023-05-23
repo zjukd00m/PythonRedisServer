@@ -14,8 +14,5 @@ def encode_jwt_payload(payload: Dict, expires: int = 1):
     return token
 
 
-def decode_jwt_payload(token: str) -> Dict | None:
-    try:
-        return jwt.decode(token, key=JWT_SECRET, algorithms="HS256")
-    except:
-        return None
+def decode_jwt_token(token: str) -> Dict | None:
+    return jwt.decode(token, key=JWT_SECRET, algorithms="HS256")

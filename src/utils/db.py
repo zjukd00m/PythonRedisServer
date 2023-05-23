@@ -1,6 +1,6 @@
-import redis
+import aioredis
 from sqlalchemy import create_engine
-from sqlalchemy.orm.session import Session, sessionmaker
+from sqlalchemy.orm.session import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 
@@ -12,20 +12,20 @@ Base = declarative_base()
 engine = create_engine(POSTGRES_URI)
 
 
-def get_redis_conn():
+async def get_redis_conn():
     try:
         # Create a pool to reuse the same connection and reduce the number
         # of connections for multiple operations
-        pool = redis.ConnectionPool(max_connections=5).from_url(REDIS_URI)
+        pool = aioredis.ConnectionPool(max_connections=5).from_url(REDIS_URI)
 
         # Yield the connection to avoid closing it
-        r = redis.Redis(connection_pool=pool, ssl=False, decode_responses=True)
+        r = aioredis.Redis(connection_pool=pool, ssl=False, decode_responses=True)
 
         yield r
 
     finally:
-        r.close()
-        pool.disconnect()
+        await r.close()
+        await pool.disconnect()
 
 
 def init_db():
