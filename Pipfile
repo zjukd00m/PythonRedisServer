@@ -16,6 +16,7 @@ argon2-cffi = "*"
 sqlalchemy = "*"
 psycopg2-binary = "*"
 pytz = "*"
+aioredis = "*"
 
 [packages.fastapi]
 extras = [ "all",]

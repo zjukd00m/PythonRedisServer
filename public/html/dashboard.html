@@ -43,6 +43,33 @@
 
 {% block scripts %}
 <script>
+    // Open a real-time connection using SSE (Server Side Events)
+    function pubsub_listener() {
+        let src;
+        try {
+            src = new EventSource("http://localhost:8080/api/pub_sub/stream", { withCredentials: true });
+
+            src.onopen = function (event) {
+                console.log("The connection was established");
+            }
+
+            src.onmessage = function (event) {
+                console.log(event.data);
+            }
+
+            src.onerror = function (error) {
+                console.error(error);
+                src.close();
+            }
+        } catch (error) {
+            console.error(error);
+            src.close();
+        }
+    }
+
+    pubsub_listener();
+</script>
+<script>
     async function sendMessageToClient(clientId) {
         console.log("Will send a message to client with id = " + clientId);
     }
